@@ -1,0 +1,70 @@
+//tag::ref-doc[]
+= Pg Decoding Adapter
+
+Converts the `test_decoding` log messages into the JSON format used by the `wal2Json` output plugin.
+
+The logical decoder uses https://www.postgresql.org/docs/10/static/logicaldecoding-output-plugin.html[output plugins]
+to transform the data from the WAL's internal representation into the format desired by the consumer of the decoded log.
+
+The default (and preferred) `output plugin` for the `pg-cdc` source is https://github.com/eulerto/wal2json[wal2json].
+Later produces a JSON object per transaction.
+
+The output plugins though are written in C and must be loaded into the database server as a shared library prior to
+running the PostgreSQL server. All this requires superuser privileges and filesystem access on the database server.
+
+Out of the box PostgreSQL is pre-configured with a https://www.postgresql.org/docs/10/static/test-decoding.html[test_decoding]
+ plugin that decodes the WAL messages into (human readable) text representations. While such representation is not quite
+ reliable, it doesn't require installing additional libraries is allays available.
+
+The `wal2json-transformer` processor converts the text messages produced by the `test_decoding` plugin into JSON
+ format complaint with the `wal2json` plugin.
+
+Note: `test_decoding` produces a single text message fore each DML event (e.g. begin-tx, commit-tx,
+insert, update and delete). The `wal2json-transformer` and the underlaying parser aggregate the input messages
+into a single JSON object per transaction, represented by the `Change` java class.
+
+== Input
+
+=== Headers
+N/A
+
+=== Payload
+* `Text log message from the test_decoding plugin`
+
+== Output
+
+=== Headers
+
+* `Content-Type: application/x-java-object`
+
+=== Payload
+
+* `Change java object that presenting the wal2json message`
+
+== Options
+
+The **$$wal2json-transformer$$** $$processor$$ has the following options:
+
+//tag::configuration-properties[]
+//end::configuration-properties[]
+
+
+== Build
+
+```
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+You can find the corresponding binder based projects here.
+You can then cd into one one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar spring-cloud-starter-stream-processor-wal2json-transformer.jar
+```
+
+//end::ref-doc[]

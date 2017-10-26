@@ -1,0 +1,75 @@
+//tag::ref-doc[]
+= PG Replication Source
+
+This source reads a PostgreSQL write-ahead log (WAL), and emits new messages on DB change events such as row `insert`,
+`update` and `delete`.
+Events are grouped by transaction, in their commit order. Aborted/rolled-back transactions are skipped.
+
+The source messages format depends on the pre-configured
+https://www.postgresql.org/docs/10/static/logicaldecoding-explanation.html#idm46046857882464[Output Plugin].
+The https://github.com/eulerto/wal2json[wal2json] is the preferred `output plugin`. The wal2json output plugin produces
+a JSON object per transaction.
+
+== Input
+
+N/A
+
+== Output
+
+=== Headers
+
+* `Content-Type: application/x-java-object`
+
+=== Payload
+
+* `String`
+
+== Options
+
+The **$$pg-cdc$$** $$source$$ has the following options:
+
+//tag::configuration-properties[]
+$$pg.cdc.jdbc-password$$:: $$JDBC password$$ *($$String$$, default: `$$postgres$$`)*
+$$pg.cdc.jdbc-url$$:: $$JDBC URL to connect to the Postgres DB.$$ *($$String$$, default: `$$jdbc:postgresql://localhost:5432/postgres$$`)*
+$$pg.cdc.jdbc-user$$:: $$JDBC user name$$ *($$String$$, default: `$$postgres$$`)*
+$$pg.cdc.output-plugin$$:: $$Name of the output plugin configured in DB. The output plugin transform the data from the write-ahead log's
+ internal representation into the format the consumer of a replication slot desires.$$ *($$String$$, default: `$$wal2json$$`)*
+$$pg.cdc.output-plugin-options$$:: $$Output Plugin specific options. Defaults to the WAL2JSON plugin options:
+ include-xids:[true],pretty-print:[false],include-timestamp:[true],include-lsn:[true],include-schemas:[true],
+ include-types:[true], write-in-chunks:[false]$$ *($$java.util.Map<java.lang.String,java.lang.String>$$, default: `$$<none>$$`)*
+$$pg.cdc.recreate-replication-slot$$:: $$Drop and recreate any existing `replicationSlot`$$ *($$Boolean$$, default: `$$false$$`)*
+$$pg.cdc.replication-slot$$:: $$In the context of logical replication, a slot represents a stream of changes that can be replayed to a client
+ in the order they were made on the origin server. Each slot streams a sequence of changes from a single database.
+ A replication slot name is an identifier that is unique across all databases in a PostgreSQL cluster. Slots
+ persist independently of the connection using them and are crash-safe.$$ *($$String$$, default: `$$<none>$$`)*
+$$pg.cdc.start-position$$:: $$The current position of each slot is persisted only at checkpoint, so in the case of a crash the slot may
+ return to an earlier LSN, which will then cause recent changes to be resent when the server restarts. Logical
+ decoding clients are responsible for avoiding ill effects from handling the same message more than once.
+ Clients may wish to record the last LSN they saw when decoding and skip over any repeated data or
+ (when using the replication protocol) request that decoding start from that LSN rather than letting the server
+ determine the start point. The Replication Progress Tracking feature is designed for this purpose, refer to
+ replication origins.$$ *($$String$$, default: `$$<none>$$`)*
+//end::configuration-properties[]
+
+Also see the http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html[Spring Boot Documentation]
+for addition `DataSource` properties and `TriggerProperties` and `MaxMessagesProperties` for polling options.
+
+== Build
+
+```
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+You can find the corresponding binder based projects here.
+You can then cd into one one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar pg.cdc.source.jar --query=<QUERY> [datasource credentials]
+```
+
+//end::ref-doc[]

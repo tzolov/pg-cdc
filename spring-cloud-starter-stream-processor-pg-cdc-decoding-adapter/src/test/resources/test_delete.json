@@ -1,0 +1,19 @@
+{
+  "kind": "delete",
+  "schema": "public",
+  "table": "table_with_unique",
+  "oldkeys": {
+    "keynames": [
+      "g",
+      "n"
+    ],
+    "keytypes": [
+      "float8",
+      "bool"
+    ],
+    "keyvalues": [
+      1.23,
+      false
+    ]
+  }
+}

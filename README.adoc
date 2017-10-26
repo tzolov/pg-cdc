@@ -1,0 +1,19 @@
+# PostgreSQL Logical Replication
+
+PostgreSQL https://jdbc.postgresql.org/documentation/head/replication.html[Logical Replication] allows changes
+from a database to be streamed in real-time to an external systems. It provides an
+https://martinfowler.com/eaaDev/EventSourcing.html[Event Sourcing] pattern for PostgreSQL.
+
+Logical decoding reads the database’s write-ahead log (WAL), and emits row-level change events on row `insert`, `update`
+and `delete`. Those events are `grouped by transaction`,
+and appear `in the order` in which they were committed to the database. Aborted/rolled-back transactions do not appear in
+the stream.
+
+## Pg Replication Source
+include::spring-cloud-starter-stream-source-pg-cdc/README.adoc[]
+
+## Pg Replication Geode Sink
+include::spring-cloud-starter-stream-sink-pg-cdc-geode/README.adoc[]
+
+## Pg Decoding Adapter
+include::spring-cloud-starter-stream-processor-pg-decoding-adapter/README.adoc[]

@@ -1,0 +1,50 @@
+//tag::ref-doc[]
+= PG Replication Geode Sink
+
+This sink reads the input WAL messages and updates the corresponding Geode Regions.
+
+== Input
+
+=== Headers
+* `Content-Type: application/x-java-object`
+
+=== Payload
+* `Change object representing PG transaction using the wal2json JSON format`
+
+== Output
+N/A
+
+=== Headers
+
+* `Content-Type: application/x-java-object`
+
+
+== Options
+
+The **$$pg-cdc-geode$$** $$sink$$ has the following options:
+
+//tag::configuration-properties[]
+$$pg.cdc.keyvalue.jdbc-password$$:: $$JDBC password$$ *($$String$$, default: `$$postgres$$`)*
+$$pg.cdc.keyvalue.jdbc-url$$:: $$JDBC URL to connect to the Postgres DB.$$ *($$String$$, default: `$$jdbc:postgresql://localhost:5432/postgres$$`)*
+$$pg.cdc.keyvalue.jdbc-user$$:: $$JDBC user name$$ *($$String$$, default: `$$postgres$$`)*
+//end::configuration-properties[]
+
+== Build
+
+```
+$ ./mvnw clean install -PgenerateApps
+$ cd apps
+```
+You can find the corresponding binder based projects here.
+You can then cd into one one of the folders and build it:
+```
+$ ./mvnw clean package
+```
+
+== Examples
+
+```
+java -jar ... TODO
+```
+
+//end::ref-doc[]

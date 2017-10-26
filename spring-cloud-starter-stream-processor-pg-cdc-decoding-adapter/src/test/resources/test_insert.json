@@ -1,0 +1,23 @@
+{
+  "kind": "insert",
+  "schema": "public",
+  "table": "xpto",
+  "columnnames": [
+    "a",
+    "b",
+    "c",
+    "d"
+  ],
+  "columntypes": [
+    "int4",
+    "bool",
+    "varchar",
+    "float4"
+  ],
+  "columnvalues": [
+    1,
+    true,
+    "test1",
+    null
+  ]
+}

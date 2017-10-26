@@ -1,0 +1,122 @@
+{
+  "change": [
+    {
+      "kind": "insert",
+      "schema": "public",
+      "table": "table_with_pk",
+      "columnnames": [
+        "a",
+        "b",
+        "c"
+      ],
+      "columntypes": [
+        "int4",
+        "varchar",
+        "timestamp"
+      ],
+      "columnvalues": [
+        1,
+        "Backup and Restore",
+        "2017-10-02 19:13:09.280702"
+      ]
+    },
+    {
+      "kind": "insert",
+      "schema": "public",
+      "table": "table_with_pk",
+      "columnnames": [
+        "a",
+        "b",
+        "c"
+      ],
+      "columntypes": [
+        "int4",
+        "varchar",
+        "timestamp"
+      ],
+      "columnvalues": [
+        2,
+        "Tuning",
+        "2017-10-02 19:13:09.280702"
+      ]
+    },
+    {
+      "kind": "insert",
+      "schema": "public",
+      "table": "table_with_pk",
+      "columnnames": [
+        "a",
+        "b",
+        "c"
+      ],
+      "columntypes": [
+        "int4",
+        "varchar",
+        "timestamp"
+      ],
+      "columnvalues": [
+        3,
+        "Replication",
+        "2017-10-02 19:13:09.280702"
+      ]
+    },
+    {
+      "kind": "delete",
+      "schema": "public",
+      "table": "table_with_pk",
+      "oldkeys": {
+        "keynames": [
+          "a",
+          "c"
+        ],
+        "keytypes": [
+          "int4",
+          "timestamp"
+        ],
+        "keyvalues": [
+          1,
+          "2017-10-02 19:13:09.280702"
+        ]
+      }
+    },
+    {
+      "kind": "delete",
+      "schema": "public",
+      "table": "table_with_pk",
+      "oldkeys": {
+        "keynames": [
+          "a",
+          "c"
+        ],
+        "keytypes": [
+          "int4",
+          "timestamp"
+        ],
+        "keyvalues": [
+          2,
+          "2017-10-02 19:13:09.280702"
+        ]
+      }
+    },
+    {
+      "kind": "insert",
+      "schema": "public",
+      "table": "table_without_pk",
+      "columnnames": [
+        "a",
+        "b",
+        "c"
+      ],
+      "columntypes": [
+        "int4",
+        "numeric",
+        "text"
+      ],
+      "columnvalues": [
+        1,
+        2.34,
+        "Tapir"
+      ]
+    }
+  ]
+}
